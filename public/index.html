@@ -13,9 +13,11 @@
     <!-- Form Bölümü -->
     <div id="uploadSection">
       <form id="uploadForm" class="mt-4">
-        <input type="text" name="name" class="form-control mb-2" placeholder="Adınızı yazın" required>
-        <input type="file" name="photo" class="form-control mb-2" accept="image/*" required>
-        <button type="submit" class="btn btn-primary">Fotoğrafı Yükle</button>
+ form.innerHTML = `
+  <input type="text" name="name" placeholder="İsminiz" required><br><br>
+  <input type="file" name="photo" accept="image/*" required><br><br>
+  <button type="submit">Yükle</button>
+`;
       </form>
       <div id="result" class="mt-3 text-success"></div>
     </div>

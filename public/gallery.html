@@ -1,77 +1,46 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Düğün Galerisi</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .gallery-img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-    }
-    .gallery-img:hover {
-      transform: scale(1.05);
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Fotoğraf Galerisi</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
-<body class="bg-light">
-  <div class="container py-5">
-    <h2 class="text-center mb-4">📸 Yüklenen Düğün Fotoğrafları</h2>
-    <div class="row" id="gallery"></div>
+<body>
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">📸 Düğün Galerisi</h2>
+    <div id="gallery" class="row"></div>
   </div>
 
   <script>
-  fetch('/list-photos')
-    .then(response => response.json())
-    .then(photos => {
-      const gallery = document.getElementById('gallery');
+    fetch('/list-photos')
+      .then(response => response.json())
+      .then(photos => {
+        const gallery = document.getElementById('gallery');
 
-      photos.forEach(photo => {
-        const col = document.createElement('div');
-        col.className = "col-md-4 mb-4 text-center";
+        photos.forEach(photo => {
+          const col = document.createElement('div');
+          col.className = "col-md-4 mb-4 text-center";
 
-        const link = document.createElement('a');
-        link.href = '/uploads/' + photo.filename;
-        link.download = photo.filename;
+          const link = document.createElement('a');
+          link.href = '/uploads/' + photo.filename;
+          link.download = photo.filename;
 
-        const img = document.createElement('img');
-        img.src = '/uploads/' + photo.filename;
-        img.className = 'gallery-img';
-        img.style.maxWidth = '100%';
-        img.style.borderRadius = '8px';
-        img.style.cursor = 'pointer';
+          const img = document.createElement('img');
+          img.src = '/uploads/' + photo.filename;
+          img.className = 'img-fluid rounded';
+          img.style.maxHeight = '300px';
+          img.style.cursor = 'pointer';
 
-        link.appendChild(img);
+          const caption = document.createElement('p');
+          caption.textContent = photo.name || 'Anonim';
+          caption.className = 'mt-2 fw-bold';
 
-        const caption = document.createElement('p');
-        caption.textContent = photo.name || 'Anonim';
-        caption.style.fontWeight = 'bold';
-        caption.style.marginTop = '8px';
-
-        col.appendChild(link);
-        col.appendChild(caption);
-        gallery.appendChild(col);
+          link.appendChild(img);
+          col.appendChild(link);
+          col.appendChild(caption);
+          gallery.appendChild(col);
+        });
       });
-    });
-</script>
-
-  const caption = document.createElement('p');
-  caption.textContent = photo.name || 'Anonim';
-  caption.style.textAlign = 'center';
-  caption.style.marginTop = '5px';
-  caption.style.fontWeight = 'bold';
-
-  col.appendChild(img);
-  col.appendChild(caption);
-  gallery.appendChild(col);
-});
-    }
-    loadGallery();
   </script>
 </body>
 </html>

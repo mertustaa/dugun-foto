@@ -11,36 +11,18 @@
     <div id="gallery" class="row"></div>
   </div>
 
-  <script>
-    fetch('/list-photos')
-      .then(response => response.json())
-      .then(photos => {
-        const gallery = document.getElementById('gallery');
+ <script>
+  fetch('/list-photos')
+    .then(res => res.json())
+    .then(data => {
+      console.log("Sunucudan gelen veri:", data); // Tarayıcı konsolunda görünecek
 
-        photos.forEach(photo => {
-          const col = document.createElement('div');
-          col.className = "col-md-4 mb-4 text-center";
+      const gallery = document.getElementById('gallery');
 
-          const link = document.createElement('a');
-          link.href = '/uploads/' + photo.filename;
-          link.download = photo.filename;
-
-          const img = document.createElement('img');
-          img.src = '/uploads/' + photo.filename;
-          img.className = 'img-fluid rounded';
-          img.style.maxHeight = '300px';
-          img.style.cursor = 'pointer';
-
-          const caption = document.createElement('p');
-          caption.textContent = photo.name || 'Anonim';
-          caption.className = 'mt-2 fw-bold';
-
-          link.appendChild(img);
-          col.appendChild(link);
-          col.appendChild(caption);
-          gallery.appendChild(col);
-        });
-      });
-  </script>
+      const debug = document.createElement('pre');
+      debug.textContent = JSON.stringify(data, null, 2); // Ekrana JSON'u bas
+      gallery.appendChild(debug);
+    });
+</script>
 </body>
 </html>

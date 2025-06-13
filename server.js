@@ -8,6 +8,7 @@ const port = 3000;
 
 app.use(cors());
 app.use(express.static('public'));
+app.use('/uploads', express.static('uploads'));
 
 const storage = multer.diskStorage({
   destination: './uploads',
@@ -22,6 +23,20 @@ const upload = multer({ storage: storage });
 
 app.post('/upload', upload.single('photo'), (req, res) => {
   res.send('Yükleme başarılı!');
+});
+
+const fs = require('fs');
+app.get('/list-photos', (req, res) => {
+  fs.readdir('uploads', (err, files) => {
+    if (err) {
+      res.status(500).send('Sunucu hatası');
+    } else {
+      const imageFiles = files.filter(file =>
+        /\.(jpg|jpeg|png|gif)$/i.test(file)
+      );
+      res.json(imageFiles);
+    }
+  });
 });
 
 app.listen(port, () => {

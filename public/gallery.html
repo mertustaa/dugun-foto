@@ -31,13 +31,32 @@ async function loadGallery() {
       const photos = await response.json();
       const gallery = document.getElementById('gallery');
       photos.forEach(photo => {
-        const col = document.createElement('div');
-        col.className = "col-md-4 mb-4";
-        const img = document.createElement('img');
-        img.src = '/uploads/' + photo;
-        img.className = 'gallery-img';
-        gallery.appendChild(col).appendChild(img);
-      });
+  const col = document.createElement('div');
+  col.className = "col-md-4 mb-4";
+
+  const img = document.createElement('img');
+  img.src = '/uploads/' + photo.filename;
+  img.className = 'gallery-img';
+  img.style.cursor = 'pointer';
+
+  // Tıklanınca fotoğraf indir
+  img.addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.href = img.src;
+    link.download = photo.filename;
+    link.click();
+  });
+
+  const caption = document.createElement('p');
+  caption.textContent = photo.name || 'Anonim';
+  caption.style.textAlign = 'center';
+  caption.style.marginTop = '5px';
+  caption.style.fontWeight = 'bold';
+
+  col.appendChild(img);
+  col.appendChild(caption);
+  gallery.appendChild(col);
+});
     }
     loadGallery();
   </script>

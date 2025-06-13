@@ -53,6 +53,21 @@ app.post('/upload', upload.single('photo'), (req, res) => {
 
 const fs = require('fs');
 app.get('/list-photos', (req, res) => {
+  fs.readFile(metadataPath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Fotoğraf listesi okunamadı:', err);
+      return res.status(500).send('Sunucu hatası');
+    }
+
+    try {
+      const metadata = JSON.parse(data);
+      res.json(metadata);
+    } catch (e) {
+      console.error('JSON parse hatası:', e);
+      res.status(500).send('Veri işlenemedi');
+    }
+  });
+});
   fs.readdir('uploads', (err, files) => {
     if (err) {
       res.status(500).send('Sunucu hatası');

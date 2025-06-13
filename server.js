@@ -2,7 +2,9 @@ const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
-
+const fs = require('fs');
+const path = require('path');
+const metadataPath = path.join(__dirname, 'uploads', 'metadata.json');
 const app = express();
 const port = 3000;
 
@@ -22,7 +24,31 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post('/upload', upload.single('photo'), (req, res) => {
-  res.send('Yükleme başarılı!');
+  const name = req.body.name || 'Anonim';
+  const filename = req.file.filename;
+
+  // metadata.json'u oku veya başlat
+  fs.readFile(metadataPath, 'utf8', (err, data) => {
+    let metadata = [];
+    if (!err && data) {
+      try {
+        metadata = JSON.parse(data);
+      } catch (e) {
+        console.error('Metadata parse hatası:', e);
+      }
+    }
+
+    // Yeni veriyi ekle
+    metadata.push({ filename, name });
+
+    // metadata.json dosyasına yaz
+    fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2), err => {
+      if (err) {
+        console.error('Metadata yazılamadı:', err);
+      }
+      res.redirect('/');
+    });
+  });
 });
 
 const fs = require('fs');

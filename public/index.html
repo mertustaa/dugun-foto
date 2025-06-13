@@ -8,17 +8,10 @@
 </head>
 <body class="bg-light">
   <div class="container mt-5 text-center">
-    <h2 class="mb-4">📸 Düğün Albümüne Giriş</h2>
-
-    <!-- Şifre Giriş -->
-    <div id="loginBox">
-      <input type="password" id="passwordInput" class="form-control mb-2" placeholder="Şifreyi girin" />
-      <button onclick="checkPassword()" class="btn btn-dark">Giriş</button>
-      <div id="error" class="text-danger mt-2"></div>
-    </div>
+    <h2 class="mb-4">📸 Düğün Albümüne Fotoğraf Yükle</h2>
 
     <!-- Form Bölümü -->
-    <div id="uploadSection" style="display:none;">
+    <div id="uploadSection">
       <form id="uploadForm" class="mt-4">
         <input type="text" name="name" class="form-control mb-2" placeholder="Adınızı yazın" required>
         <input type="file" name="photo" class="form-control mb-2" accept="image/*" required>
@@ -29,18 +22,6 @@
   </div>
 
   <script>
-    const correctPassword = "dugun2025";
-
-    function checkPassword() {
-      const input = document.getElementById("passwordInput").value;
-      if (input === correctPassword) {
-        document.getElementById("loginBox").style.display = "none";
-        document.getElementById("uploadSection").style.display = "block";
-      } else {
-        document.getElementById("error").innerText = "Yanlış şifre!";
-      }
-    }
-
     document.getElementById('uploadForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target);
